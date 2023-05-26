@@ -1,7 +1,10 @@
 import getWikiResults from '@/lib/getWikiResult';
 import Item from './components/Item';
+
 type Props = {
-  params: { searchTerm: string };
+  params: {
+    searchTerm: string;
+  };
 };
 
 export async function generateMetadata({ params: { searchTerm } }: Props) {
@@ -20,10 +23,15 @@ export async function generateMetadata({ params: { searchTerm } }: Props) {
     description: `Search results for ${displayTerm}`,
   };
 }
-async function SearchResults({ params: { searchTerm } }: Props) {
+
+export default async function SearchResults({ params: { searchTerm } }: Props) {
   const wikiData: Promise<SearchResult> = getWikiResults(searchTerm);
   const data = await wikiData;
   const results: Result[] | undefined = data?.query?.pages;
+  if (results === undefined) {
+    throw new Error('something went wrong');
+  }
+
   const content = (
     <main className="bg-slate-200 mx-auto max-w-lg py-1 min-h-screen">
       {results ? (
@@ -38,5 +46,3 @@ async function SearchResults({ params: { searchTerm } }: Props) {
 
   return content;
 }
-
-export default SearchResults;
