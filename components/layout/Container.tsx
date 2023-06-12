@@ -3,15 +3,15 @@ import Sidebar from './sidebar/Sidebar'
 import Content from './mainContent/Content'
 import Setting from './settings/Setting'
 import Provider from './mainContent/Provider'
-type ContainerProps = {
-  children: React.ReactNode
-}
-function Container({ children }: ContainerProps) {
+
+function Container() {
   return (
     <div className='h-screen w-full border flex'>
-      {/* {children}
-      <Setting /> */}
-      <Provider />
+      {/* <Provider /> */}
+      {/* <Sidebar />
+      <Content /> */}
+
+      {/* <Setting /> */}
     </div>
   )
 }

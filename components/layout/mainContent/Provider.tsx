@@ -1,113 +1,117 @@
 'use client'
 import React, { useState } from 'react'
-import dynamic from 'next/dynamic'
-import { DragDropContext } from 'react-beautiful-dnd'
-import Container from '../Container'
-import { initialData } from './faceData'
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult
+} from 'react-beautiful-dnd'
 import Sidebar from '../sidebar/Sidebar'
-const Column = dynamic(() => import('./Column'), { ssr: false })
+import Checkbox from '../../checkbox/Checkbox'
+import Content from './Content'
 
-const reorderColumnList = (sourceCol: any, startIndex: any, endIndex: any) => {
-  const newTaskIds = Array.from(sourceCol.taskIds)
-  const [removed] = newTaskIds.splice(startIndex, 1)
-  newTaskIds.splice(endIndex, 0, removed)
-
-  const newColumn = {
-    ...sourceCol,
-    taskIds: newTaskIds
-  }
-
-  return newColumn
+interface Item {
+  id: string
+  content: string
 }
-function Provider() {
-  const [state, setState] = useState(initialData)
 
-  const onDragEnd = (result: any) => {
-    const { destination, source } = result
+const initialItems: Item[] = [
+  { id: 'item-1', content: 'Item 1' },
+  { id: 'item-2', content: 'Item 2' },
+  { id: 'item-3', content: 'Item 3' },
+  { id: 'item-4', content: 'Item 4' }
+]
 
-    // If user tries to drop in an unknown destination
-    if (!destination) return
+const App: React.FC = () => {
+  const [items, setItems] = useState<Item[]>(initialItems)
+  const [droppedItems, setDroppedItems] = useState<Item[]>([])
 
-    // if the user drags and drops back in the same position
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
-      return
+  const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) return
+
+    const updatedItems = Array.from(items)
+    const [removed] = updatedItems.splice(result.source.index, 1)
+
+    if (result.destination.droppableId === 'column-2') {
+      setDroppedItems((prevItems) => [...prevItems, removed])
     }
 
-    // If the user drops within the same column but in a different positoin
-    const sourceCol = state.columns[source.droppableId]
-    const destinationCol = state.columns[destination.droppableId]
-
-    if (sourceCol.id === destinationCol.id) {
-      const newColumn = reorderColumnList(
-        sourceCol,
-        source.index,
-        destination.index
-      )
-
-      const newState = {
-        ...state,
-        columns: {
-          ...state.columns,
-          [newColumn.id]: newColumn
-        }
-      }
-      setState(newState)
-      return
-    }
-
-    // If the user moves from one column to another
-    const startTaskIds = Array.from(sourceCol.taskIds)
-    const [removed] = startTaskIds.splice(source.index, 1)
-    const newStartCol = {
-      ...sourceCol,
-      taskIds: startTaskIds
-    }
-
-    const endTaskIds = Array.from(destinationCol.taskIds)
-    endTaskIds.splice(destination.index, 0, removed)
-    const newEndCol = {
-      ...destinationCol,
-      taskIds: endTaskIds
-    }
-
-    const newState = {
-      ...state,
-      columns: {
-        ...state.columns,
-        [newStartCol.id]: newStartCol,
-        [newEndCol.id]: newEndCol
-      }
-    }
-
-    setState(newState)
+    setItems(updatedItems)
   }
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <div className='flex flex-row h-full  w-full m-1'>
-        {state.columnOrder.map((columnId, index) => {
-          const column = state.columns[index]
-          const tasks = column.taskIds.map((taskId) => state.tasks[taskId])
-          return (
-            <>
-              1
-              <Sidebar key={columnId} />
-            </>
-          )
-        })}
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <div className='flex w-4/5'>
+        {/* Element ✅😊 */}
+        <Droppable droppableId='column-1'>
+          {(provided) => {
+            const { droppableProps, innerRef, placeholder } = provided
+            return (
+              <Sidebar>
+                <div className='w-full' ref={innerRef} {...droppableProps}>
+                  {items.map((item, index) => (
+                    <Draggable
+                      key={item.id}
+                      draggableId={item.id}
+                      index={index}
+                    >
+                      {(provided) => {
+                        const { draggableProps, dragHandleProps, innerRef } =
+                          provided
+                        return (
+                          <div
+                            ref={innerRef}
+                            {...draggableProps}
+                            {...dragHandleProps}
+                          >
+                            <Checkbox title={item.content} />
+                          </div>
+                        )
+                      }}
+                    </Draggable>
+                  ))}
+                  {placeholder}
+                </div>
+              </Sidebar>
+            )
+          }}
+        </Droppable>
+        {/* content ✅😊 */}
+        <Droppable droppableId='column-2'>
+          {(provided) => {
+            const { droppableProps, innerRef, placeholder } = provided
+            return (
+              <Content>
+                <div
+                  ref={innerRef}
+                  {...droppableProps}
+                  className='border border-red-400 h-full'
+                >
+                  {droppedItems.map((item, index) => (
+                    <div
+                      className='block'
+                      key={item.id}
+                      style={{
+                        userSelect: 'none',
+                        padding: 16,
+                        margin: '0 0 8px 0',
+                        minHeight: '50px',
+                        backgroundColor: 'white',
+                        cursor: 'default'
+                      }}
+                    >
+                      {item.content}
+                    </div>
+                  ))}
+                  {placeholder}
+                </div>
+              </Content>
+            )
+          }}
+        </Droppable>
       </div>
     </DragDropContext>
   )
 }
 
-export default Provider
-
-// state.columnOrder.map((columnId:number) => {
-//       const column = state.columns[columnId];
-//       const tasks = column.taskIds.map((taskId) => state.tasks[taskId]);
-
-//   return null
-// })
+export default App

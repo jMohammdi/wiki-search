@@ -1,8 +1,12 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-
-function Content() {
-  return <div className=' w-3/5 border  border-red-300'></div>
+type ContentType = {
+  children: React.ReactNode
+}
+function Content({ children }: ContentType) {
+  return (
+    <div className=' w-full border  border-red-300 bg-lime-300'>{children}</div>
+  )
 }
 
 export default Content

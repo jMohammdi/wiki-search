@@ -6,7 +6,7 @@ type CheckBoxProps = {
 }
 function Checkbox({ title }: CheckBoxProps) {
   return (
-    <div className='flex border rounded cursor-pointer shadow-sm m-1 items-center p-1'>
+    <div className='flex border rounded  shadow-sm  items-center py-2 m-1'>
       <Icon icon={AiOutlineCheckSquare} />
       <span className='mx-2'>{title}</span>
     </div>

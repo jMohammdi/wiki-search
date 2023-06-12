@@ -24,6 +24,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/layout/mainContent/Tes.js", "components/layout/mainContent/Column.jsx", "components/layout/mainContent/Test.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/layout/mainContent/Tes.js", "components/layout/mainContent/Column.jsx", "components/layout/mainContent/Test.jsx", "components/layout/mainContent/TestDrag.jsx"],
   "exclude": ["node_modules"]
 }
