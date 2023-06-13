@@ -105,6 +105,7 @@ const ExampleComponent = ({
           {column2.map((item, index) => (
             <>
               <div
+                onClick={() => setActiveItemId(item.id)}
                 className={`border my-1 rounded p-1 ${
                   activeItemId === item.id ? 'border-blue-400' : ''
                 }`}
