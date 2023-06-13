@@ -6,11 +6,10 @@ type PropsType = {
 }
 function Sidebar({ children }: PropsType) {
   return (
-    <div className=' w-1/5 border  border-yellow-400 '>
-      {/* <div className='w-full'>
-        <Checkbox title='checkbox' />
-        <Password title='password' />
-      </div> */}
+    <div className=' w-1/5 '>
+      <div className='w-full p-2 text-center text-white text-base bg-emerald-500'>
+        Elements
+      </div>
       {children}
     </div>
   )

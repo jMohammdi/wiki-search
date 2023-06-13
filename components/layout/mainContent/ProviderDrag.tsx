@@ -57,6 +57,7 @@ const ExampleComponent = () => {
 
   return (
     <>
+
       {/*(wrapper) sidebar Element */}
       <Sidebar>
         <div className='w-full h-full' >
