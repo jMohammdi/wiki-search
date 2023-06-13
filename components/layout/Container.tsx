@@ -2,16 +2,16 @@ import React from 'react'
 import Sidebar from './sidebar/Sidebar'
 import Content from './mainContent/Content'
 import Setting from './settings/Setting'
-import Provider from './mainContent/Provider'
+import ProviderDrags from './mainContent/ProviderDrag'
 
 function Container() {
   return (
     <div className='h-screen w-full border flex'>
-      {/* <Provider /> */}
+
       {/* <Sidebar />
       <Content /> */}
-
-      {/* <Setting /> */}
+      <ProviderDrags />
+      <Setting />
     </div>
   )
 }
