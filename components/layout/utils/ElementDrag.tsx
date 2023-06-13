@@ -11,7 +11,7 @@ function ElementDrag({ id, icon, type, text }: ElementDragProps) {
     return (
         <div className='flex border rounded  shadow-sm  items-center py-2 m-1'>
             <Icon icon={icon} />
-            <span className='mx-2'>{text}</span>
+            <span className='mx-1'>{text}</span>
         </div>
     )
 }

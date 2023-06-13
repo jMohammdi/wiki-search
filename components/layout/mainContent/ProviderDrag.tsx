@@ -1,11 +1,12 @@
 'use client'
-import React from 'react'
+import React from 'react';
 import { useState } from 'react';
-import { DefaultElementDragableProps as ItemProps, ElementDragableProps } from "../../../model/typeElementdrag"
-import { Elements } from "../../../model/SampleData"
+import { DefaultElementDragableProps as ItemProps } from '../../../model/typeElementdrag';
+import { Elements } from '../../../model/SampleData';
 import Sidebar from '../sidebar/Sidebar';
 import ElementDrag from '../utils/ElementDrag';
 import Content from './Content';
+
 interface Item {
   id: number;
   text: string;
@@ -25,17 +26,21 @@ const ExampleComponent = () => {
     const itemId = event.dataTransfer.getData('text/plain');
     const item = column1.find((item) => item.id.toString() === itemId);
 
-    // execute function give information about element 🥱🥱
-    alert(item?.text)
     if (item) {
-      // Remove the item from Column 1 ✅
-      // setColumn1((prevColumn1) => prevColumn1.filter((i) => i.id !== item.id));
-      // Add the item to Column 2 ✅✅
-      setColumn2((prevColumn2) => [...prevColumn2, item]);
+      const rect = event.currentTarget.getBoundingClientRect();
+      const offsetX = event.clientX - rect.left;
+      const offsetY = event.clientY - rect.top;
 
+      // Check if the drop occurred inside the target container
+      if (offsetX >= 0 && offsetX <= rect.width && offsetY >= 0 && offsetY <= rect.height) {
+        // Remove the item from Column 1
+        setColumn1((prevColumn1) => prevColumn1.filter((i) => i.id !== item.id));
+        // Add the item to Column 2
+        setColumn2((prevColumn2) => [...prevColumn2, item]);
+      }
     }
-
   };
+
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -43,32 +48,19 @@ const ExampleComponent = () => {
 
   return (
     <>
-      {/*(wrapper) sidebar Element ✅ */}
+      {/*(wrapper) sidebar Element */}
       <Sidebar>
-        <div
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-
-        >
+        <div className='w-full h-full' onDragOver={handleDragOver} onDrop={handleDrop}>
           {column1.map((item) => (
-            <div
-              key={item.id}
-              draggable
-              onDragStart={(event) => handleDragStart(event, item)}
-            >
+            <div key={item.id} draggable onDragStart={(event) => handleDragStart(event, item)}>
               <ElementDrag icon={item.icon} id={item.id} key={item.id} text={item.text} type={item.type} />
             </div>
-
           ))}
         </div>
       </Sidebar>
-      {/*(wrapper) content Element ✅ */}
+      {/*(wrapper) content Element */}
       <Content>
-        <div
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-
-        >
+        <div className='w-full h-full bg-red-300' onDragOver={handleDragOver} onDrop={handleDrop}>
           {column2.map((item) => (
             <ElementDrag icon={item.icon} id={item.id} key={item.id} text={item.text} type={item.type} />
           ))}
