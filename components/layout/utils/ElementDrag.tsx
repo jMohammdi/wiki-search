@@ -1,17 +1,12 @@
 import React from 'react'
 import { IconType } from 'react-icons'
 import Icon from './Icon';
-type ElementDragProps = {
-    id: string;
-    icon: IconType
-    type: string
-    text: string
-}
-function ElementDrag({ id, icon, type, text }: ElementDragProps) {
+import { DefaultElementDragableProps } from "../../../model/typeElementdrag"
+function ElementDrag({ icon, label }: DefaultElementDragableProps) {
     return (
         <div className='flex border rounded  shadow-sm  items-center py-2 m-1'>
             <Icon icon={icon} />
-            <span className='mx-1'>{text}</span>
+            <span className='mx-1'>{label}</span>
         </div>
     )
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { ElementDragableProps } from "../../../../model/typeElementdrag"
+
 import InputContent from '../components/InputContent'
 function ProviderSettings() {
     return (

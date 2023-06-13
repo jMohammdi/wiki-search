@@ -9,11 +9,16 @@ import ElementDrag from '../utils/ElementDrag';
 import Content from './Content';
 import ElementCreator from '@/components/ElementCreator/components/ElementCreator';
 
+interface MyComponentProps {
+  setColumn2: React.Dispatch<React.SetStateAction<ItemProps[]>>;
+  column2: ItemProps[]
+  activeItemId: string | null
+  setActiveItemId: React.Dispatch<React.SetStateAction<string | null>>;
+}
 
-
-const ExampleComponent = () => {
+const ExampleComponent = ({ setColumn2, column2, setActiveItemId, activeItemId }: MyComponentProps) => {
   const [column1, setColumn1] = useState<ItemProps[]>(Elements);
-  const [column2, setColumn2] = useState<ItemProps[]>([]);
+
 
   const handleDragStart = (event: React.DragEvent<HTMLDivElement>, item: ItemProps) => {
     // Store the dragged item's ID
@@ -37,8 +42,11 @@ const ExampleComponent = () => {
         // Remove the item from Column 1 🧰
         // setColumn1((prevColumn1) => prevColumn1.filter((i) => i.id !== item.id));
         // Add the item to Column 2
-        const { icon, text, type, elementType } = item
-        setColumn2([...column2, { icon, text, type, id: uuidv4(), elementType }]);
+        const { icon, text, type, elementType, description, id, label } = item
+        const changeId = { icon, text, type, elementType, id: uuidv4(), description, label }
+
+        setColumn2([...column2, changeId]);
+        setActiveItemId(changeId.id);
       } else {
         // Item dropped back inside Column 1, do nothing
       }
@@ -48,12 +56,6 @@ const ExampleComponent = () => {
     }
   };
 
-
-  useEffect(() => {
-    let lastItemAdded = column2[column2.length - 1]
-
-
-  }, [column2])
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
   };
@@ -66,7 +68,7 @@ const ExampleComponent = () => {
         <div className='w-full h-full' >
           {column1.map((item) => (
             <div key={item.id} draggable onDragStart={(event) => handleDragStart(event, item)}>
-              <ElementDrag icon={item.icon} id={item.id} key={item.id} text={item.text} type={item.type} />
+              <ElementDrag key={item.id} {...item} />
             </div>
           ))}
         </div>
@@ -74,8 +76,10 @@ const ExampleComponent = () => {
       {/*(wrapper) content Element */}
       <Content>
         <div className='w-full h-full ' onDragOver={handleDragOver} onDrop={handleDrop}>
-          {column2.map((item) => (
-            <ElementCreator key={item.id} {...item} />
+          {column2.map((item, index) => (
+            <div className={`border my-1 rounded p-1 ${activeItemId === item.id ? "border-blue-400" : ""}`}>
+              <ElementCreator key={item.id} {...item} />
+            </div>
           ))}
         </div>
       </Content>

@@ -8,7 +8,7 @@ type CheckBoxProps = {
 }
 function RadioField({ text, id, type }: CheckBoxProps) {
     return (
-        <div className='flex border rounded   items-center py-2 m-1'>
+        <div className='flex    items-center m-1'>
 
             <label htmlFor={id} className='mx-2'>{text}</label>
             <input type={type} id={id} />

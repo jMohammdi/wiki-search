@@ -35,10 +35,10 @@ const generateElement = (elementProps: ElementProps) => {
 
 const ElementCreator = ({ elementType, id, text, type }: ElementProps) => {
     const element = { elementType, id, text, type }
-
+    debugger
     const dynamicElement = generateElement(element);
 
-    return <div>{dynamicElement}</div>;
+    return <div className={`  my-1 `} >{dynamicElement}</div>;
 };
 
 export default ElementCreator;
