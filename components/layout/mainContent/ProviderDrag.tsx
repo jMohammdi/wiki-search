@@ -7,6 +7,7 @@ import { Elements } from '../../../model/SampleData';
 import Sidebar from '../sidebar/Sidebar';
 import ElementDrag from '../utils/ElementDrag';
 import Content from './Content';
+import ElementCreator from '@/components/ElementCreator/components/ElementCreator';
 
 
 
@@ -36,8 +37,8 @@ const ExampleComponent = () => {
         // Remove the item from Column 1 🧰
         // setColumn1((prevColumn1) => prevColumn1.filter((i) => i.id !== item.id));
         // Add the item to Column 2
-        const { icon, text, type } = item
-        setColumn2([...column2, { icon, text, type, id: uuidv4() }]);
+        const { icon, text, type, elementType } = item
+        setColumn2([...column2, { icon, text, type, id: uuidv4(), elementType }]);
       } else {
         // Item dropped back inside Column 1, do nothing
       }
@@ -74,7 +75,7 @@ const ExampleComponent = () => {
       <Content>
         <div className='w-full h-full ' onDragOver={handleDragOver} onDrop={handleDrop}>
           {column2.map((item) => (
-            <ElementDrag icon={item.icon} id={item.id} key={item.id} text={item.text} type={item.type} />
+            <ElementCreator key={item.id} {...item} />
           ))}
         </div>
       </Content>

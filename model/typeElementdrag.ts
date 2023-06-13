@@ -17,4 +17,5 @@ export interface DefaultElementDragableProps {
   icon: IconType
   type: string
   text: string
+  elementType: string
 }

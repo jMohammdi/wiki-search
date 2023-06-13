@@ -8,10 +8,35 @@ export const Elements: DefaultElementDragableProps[] = [
     id: uuidv4(),
     text: 'Checkbox',
     icon: AiOutlineCheckSquare,
-    type: 'checkbox'
+    type: 'checkbox',
+    elementType: 'checkbox'
   },
-  { id: uuidv4(), text: 'Text Field', icon: BiText, type: 'text' },
-  { id: uuidv4(), text: 'Number', icon: BiHash, type: 'number' },
-  { id: uuidv4(), text: 'Password', icon: BsKeyFill, type: 'password' },
-  { id: uuidv4(), text: 'Radio', icon: BiRadioCircleMarked, type: 'radio' }
+  {
+    id: uuidv4(),
+    text: 'Text Field',
+    icon: BiText,
+    type: 'text',
+    elementType: 'text'
+  },
+  {
+    id: uuidv4(),
+    text: 'Number',
+    icon: BiHash,
+    type: 'number',
+    elementType: 'number'
+  },
+  {
+    id: uuidv4(),
+    text: 'Password',
+    icon: BsKeyFill,
+    type: 'password',
+    elementType: 'password'
+  },
+  {
+    id: uuidv4(),
+    text: 'Radio',
+    icon: BiRadioCircleMarked,
+    type: 'radio',
+    elementType: 'radio'
+  }
 ]

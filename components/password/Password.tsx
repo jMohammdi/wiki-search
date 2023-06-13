@@ -1,16 +1,19 @@
 import React from 'react'
-import { BsFillKeyFill } from 'react-icons/bs'
+import { AiOutlineCheckSquare } from 'react-icons/ai'
 import Icon from '../layout/utils/Icon'
-type PasswordProps = {
-  title: string
+type CheckBoxProps = {
+  text: string
+  id: string
+  type: string
 }
-function Password({ title }: PasswordProps) {
+function PasswordField({ text, id, type }: CheckBoxProps) {
   return (
-    <div className='flex border rounded cursor-pointer shadow-sm m-1 items-center p-1'>
-      <Icon icon={BsFillKeyFill} />
-      <span className='mx-2'>{title}</span>
+    <div className=' border rounded   items-center py-2 m-1 flex'>
+
+      <label htmlFor={id} className='mx-3 text-sm'>{text}</label>
+      <input className='border outline-none w-4/5 p-1 rounded' type={type} id={id} />
     </div>
   )
 }
 
-export default Password
+export default PasswordField
