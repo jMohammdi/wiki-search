@@ -1,44 +1,37 @@
-import Checkbox from '@/components/checkbox/Checkbox';
-import NumberField from '@/components/number/NumberField';
-import PasswordField from '@/components/password/Password';
-import RadioField from '@/components/radio/Radio';
-import TextField from '@/components/textField/TextField';
-import React from 'react';
+import Checkbox from '@/components/checkbox/Checkbox'
+import NumberField from '@/components/number/NumberField'
+import PasswordField from '@/components/password/Password'
+import RadioField from '@/components/radio/Radio'
+import TextField from '@/components/textField/TextField'
+import React from 'react'
+import { DefaultElementDragableProps } from '@/model/typeElementdrag'
+type ElementProps = {
+  item: DefaultElementDragableProps
+}
+const generateElement: React.FC<ElementProps> = ({ item }) => {
+  const { elementType, icon, id, titleElement, configs, type } = item
 
-interface ElementProps {
-    id: string;
-    text: string;
-
-    type: string;
-    elementType: string;
+  switch (elementType) {
+    case 'checkbox':
+      return <Checkbox text={titleElement} id={id} type={type} />
+    case 'text':
+      return <TextField text={titleElement} id={id} type={type} />
+    case 'number':
+      return <NumberField text={titleElement} id={id} type={type} />
+    case 'password':
+      return <PasswordField text={titleElement} id={id} type={type} />
+    case 'radio':
+      // You can define your own custom component here
+      return <RadioField text={titleElement} id={id} type={type} />
+    default:
+      return null
+  }
 }
 
-const generateElement = (elementProps: ElementProps) => {
-    const { id, text, type, elementType } = elementProps;
+const ElementCreator = ({ item }: ElementProps) => {
+  const dynamicElement = generateElement({ item })
 
-    switch (elementType) {
-        case 'checkbox':
-            return <Checkbox text={text} id={id} type={type} />
-        case 'text':
-            return <TextField text={text} id={id} type={type} />
-        case 'number':
-            return <NumberField text={text} id={id} type={type} />
-        case 'password':
-            return <PasswordField text={text} id={id} type={type} />;
-        case 'radio':
-            // You can define your own custom component here
-            return <RadioField text={text} id={id} type={type} />;
-        default:
-            return null;
-    }
-};
+  return <div className={`  my-1 `}>{dynamicElement}</div>
+}
 
-const ElementCreator = ({ elementType, id, text, type }: ElementProps) => {
-    const element = { elementType, id, text, type }
-    debugger
-    const dynamicElement = generateElement(element);
-
-    return <div className={`  my-1 `} >{dynamicElement}</div>;
-};
-
-export default ElementCreator;
+export default ElementCreator
