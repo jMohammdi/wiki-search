@@ -1,5 +1,6 @@
 'use client'
-import React from 'react';
+import React, { useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid'
 import { useState } from 'react';
 import { DefaultElementDragableProps as ItemProps } from '../../../model/typeElementdrag';
 import { Elements } from '../../../model/SampleData';
@@ -7,10 +8,7 @@ import Sidebar from '../sidebar/Sidebar';
 import ElementDrag from '../utils/ElementDrag';
 import Content from './Content';
 
-interface Item {
-  id: number;
-  text: string;
-}
+
 
 const ExampleComponent = () => {
   const [column1, setColumn1] = useState<ItemProps[]>(Elements);
@@ -20,15 +18,15 @@ const ExampleComponent = () => {
     // Store the dragged item's ID
     event.dataTransfer.setData('text/plain', item.id.toString());
   };
-
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     const itemId = event.dataTransfer.getData('text/plain');
     const item = column1.find((item) => item.id.toString() === itemId);
     const isUniqeElemet = column2.find((item) => item.id.toString() === itemId);
 
-    if (item && isUniqeElemet === undefined) {
-      console.log(isUniqeElemet)
+
+
+    if (item) {
       const rect = event.currentTarget.getBoundingClientRect();
       const offsetX = event.clientX - rect.left;
       const offsetY = event.clientY - rect.top;
@@ -38,7 +36,8 @@ const ExampleComponent = () => {
         // Remove the item from Column 1 🧰
         // setColumn1((prevColumn1) => prevColumn1.filter((i) => i.id !== item.id));
         // Add the item to Column 2
-        setColumn2((prevColumn2) => [...prevColumn2, item]);
+        const { icon, text, type } = item
+        setColumn2([...column2, { icon, text, type, id: uuidv4() }]);
       } else {
         // Item dropped back inside Column 1, do nothing
       }
@@ -49,10 +48,13 @@ const ExampleComponent = () => {
   };
 
 
+  useEffect(() => {
+    let lastItemAdded = column2[column2.length - 1]
 
+
+  }, [column2])
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    console.log(45)
   };
 
   return (

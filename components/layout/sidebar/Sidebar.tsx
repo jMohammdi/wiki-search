@@ -1,5 +1,4 @@
-import Checkbox from '@/components/checkbox/Checkbox'
-import Password from '@/components/password/Password'
+
 import React from 'react'
 type PropsType = {
   children: React.ReactNode
