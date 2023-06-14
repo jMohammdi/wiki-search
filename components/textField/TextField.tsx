@@ -20,7 +20,8 @@ function TextField({ text, id, type, value, width, isRequired, isDisabled }: Che
   return (
     <div className='     items-center  m-1 flex'>
       <label htmlFor={id} className='mx-3 text-sm basis-[105px] flex items-center justify-start'>
-        {isRequired ? <TiStarburst className='text-red-600' /> : null}  {text}
+        <span className='w-3'>
+          {isRequired ? <TiStarburst className='text-red-600' /> : null}</span>  {text}
       </label>
       <input
         className={`border outline-none ${x[width]} p-1 rounded`}

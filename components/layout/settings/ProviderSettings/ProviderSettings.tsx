@@ -7,10 +7,9 @@ type SettinElement = {
     setColumn2: React.Dispatch<React.SetStateAction<elProps[]>>
 }
 function ProviderSettings({ elementProps, activeElId, setColumn2 }: SettinElement) {
-    const findActiveElement: elProps[] = elementProps.filter((el) => el?.id === activeElId)
-
-
-    useEffect(() => { }, [activeElId])
+    const allProps = JSON.stringify(elementProps)
+    const allPropsArray = JSON.parse(allProps)
+    const findActiveElement = allPropsArray.filter((el: any) => el?.id === activeElId)
     /* @ts-ignore */
     const typeEvents = React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>
     /* @ts-ignore */
@@ -18,16 +17,19 @@ function ProviderSettings({ elementProps, activeElId, setColumn2 }: SettinElemen
         const { value, name, type, checked } = event.target
         const item = findActiveElement[0].configs[0]
 
-        if (name === "" || name === "") {
+        if (name === "disabled" || name === "isRequired") {
             /* @ts-ignore */
-            item[name] = value
+            findActiveElement[0].configs[0][name] = checked
         } else {
 
             /* @ts-ignore */
-            item[name] = value
+            findActiveElement[0].configs[0][name] = value
         }
-
+        const findIndex = elementProps.findIndex((element) => element.id === activeElId)
+        findActiveElement[0].configs[0] = item
+        elementProps[findIndex] = findActiveElement[0]
         setColumn2([...elementProps])
+        // findActiveElement[0].configs[0]['value'] = "javaddedddddddd"
     }
 
 
@@ -64,7 +66,7 @@ function ProviderSettings({ elementProps, activeElId, setColumn2 }: SettinElemen
                     cols={30} rows={10} />
             </div>
             <div className='mt-2 p-1 flex items-center justify-between px-4'>
-                <div>isRequired</div>
+                <div>isDisable</div>
                 <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" name='disabled' className=" outline-none focus:outline-none border"
                         onChange={(event) => changeElPropHnadler(event)}
