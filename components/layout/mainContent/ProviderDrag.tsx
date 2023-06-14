@@ -61,7 +61,7 @@ const ExampleComponent = ({
           titleElement,
           configs
         }
-        console.log(changeId)
+
         setColumn2([...column2, changeId])
         setActiveItemId(changeId.id)
       } else {
@@ -106,9 +106,8 @@ const ExampleComponent = ({
             <>
               <div
                 onClick={() => setActiveItemId(item.id)}
-                className={`border my-1 rounded p-1 ${
-                  activeItemId === item.id ? 'border-blue-400' : ''
-                }`}
+                className={`border my-1 rounded p-1 ${activeItemId === item.id ? 'border-blue-400' : ''
+                  }`}
               >
                 <ElementCreator key={item.id} item={item} />
               </div>
