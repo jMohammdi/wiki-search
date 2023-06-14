@@ -15,7 +15,7 @@ function Container() {
         activeItemId={activeItemId}
         setActiveItemId={setActiveItemId}
       />
-      <Setting column2={column2} activeElement={activeItemId} />
+      <Setting column2={column2} setColumn2={setColumn2} activeElement={activeItemId} />
     </div>
   )
 }
