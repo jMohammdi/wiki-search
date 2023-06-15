@@ -10,18 +10,31 @@ type CheckBoxProps = {
   isRequired: boolean | undefined
   isDisabled: boolean | undefined
 }
-function TextField({ text, id, type, value, width, isRequired, isDisabled }: CheckBoxProps) {
+function TextField({
+  text,
+  id,
+  type,
+  value,
+  width,
+  isRequired,
+  isDisabled
+}: CheckBoxProps) {
   const x: any = {
     0: 'w-3/12',
     1: 'w-6/12',
-    2: "w-9/12",
-    3: "w-full"
+    2: 'w-9/12',
+    3: 'w-full'
   }
   return (
     <div className='     items-center  m-1 flex'>
-      <label htmlFor={id} className='mx-3 text-sm basis-[105px] flex items-center justify-start'>
+      <label
+        htmlFor={id}
+        className='mx-3 text-sm basis-[105px] flex items-center justify-start'
+      >
         <span className='w-3'>
-          {isRequired ? <TiStarburst className='text-red-600' /> : null}</span>  {text}
+          {isRequired ? <TiStarburst className='text-red-600' /> : null}
+        </span>{' '}
+        {text}
       </label>
       <input
         className={`border outline-none ${x[width]} p-1 rounded`}
@@ -31,6 +44,7 @@ function TextField({ text, id, type, value, width, isRequired, isDisabled }: Che
         placeholder='input type text ...'
         disabled={isDisabled}
         required={isRequired}
+        readOnly
       />
     </div>
   )
