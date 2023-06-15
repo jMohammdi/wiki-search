@@ -12,6 +12,7 @@
     "@next/font": "13.4.3",
     "@types/node": "20.2.3",
     "@types/react": "18.2.6",
+    "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-dom": "18.2.4",
     "dragula": "^3.7.3",
     "eslint": "8.41.0",
