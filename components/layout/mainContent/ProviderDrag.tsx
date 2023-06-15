@@ -1,7 +1,6 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import { useState } from 'react'
 import { DefaultElementDragableProps as ItemProps } from '../../../model/typeElementdrag'
 import { Elements } from '../../../model/SampleData'
 import Sidebar from '../sidebar/Sidebar'
@@ -31,13 +30,23 @@ const ExampleComponent = ({
     // Store the dragged item's ID
     event.dataTransfer.setData('text/plain', item.id.toString())
   }
+  const handleDragStartColumn2 = (
+    event: React.DragEvent<HTMLDivElement>,
+    item: ItemProps
+  ) => {
+    // Store the dragged item's ID
+    event.dataTransfer.setData('text/plain', item.id.toString())
+    setActiveItemId(item.id.toString())
+  }
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault()
     const itemId = event.dataTransfer.getData('text/plain')
     const item = column1.find((item) => item.id.toString() === itemId)
-    const isUniqeElemet = column2.find((item) => item.id.toString() === itemId)
+    const isUniqueElement = column2.find(
+      (item) => item.id.toString() === itemId
+    )
 
-    if (item) {
+    if (item && !isUniqueElement) {
       const rect = event.currentTarget.getBoundingClientRect()
       const offsetX = event.clientX - rect.left
       const offsetY = event.clientY - rect.top
@@ -51,6 +60,7 @@ const ExampleComponent = ({
       ) {
         // Remove the item from Column 1 🧰
         // setColumn1((prevColumn1) => prevColumn1.filter((i) => i.id !== item.id));
+
         // Add the item to Column 2
         const { icon, type, elementType, configs, titleElement } = item
         const changeId = {
@@ -64,24 +74,43 @@ const ExampleComponent = ({
 
         setColumn2([...column2, changeId])
         setActiveItemId(changeId.id)
-      } else {
-        // Item dropped back inside Column 1, do nothing
       }
-    } else {
-      // if user add two same element we should change Id and label
-      console.log('change Id and label')
     }
   }
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault()
+    event.dataTransfer.dropEffect = 'move'
   }
-  useEffect(() => {
-    console.log(column2)
-  }, [column2])
+
+  const handleDragEnd = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    const newOrder = [...column2] // Create a copy of column2
+    const itemId = event.dataTransfer.getData('text/plain')
+    const draggedItemIndex = newOrder.findIndex(
+      (item) => item.id.toString() === activeItemId
+    )
+    const dropzoneIndex = Array.from(
+      event.currentTarget.parentNode.children
+    ).indexOf(event.currentTarget)
+
+    console.log('draggedItemIndex:', draggedItemIndex)
+    console.log('dropzoneIndex:', dropzoneIndex)
+
+    if (
+      draggedItemIndex !== -1 &&
+      dropzoneIndex !== -1 &&
+      draggedItemIndex !== dropzoneIndex
+    ) {
+      const [draggedItem] = newOrder.splice(draggedItemIndex, 1)
+      newOrder.splice(dropzoneIndex, 0, draggedItem)
+      setColumn2(newOrder)
+    }
+  }
+
   return (
     <>
-      {/*(wrapper) sidebar Element */}
+      {/* (wrapper) sidebar Element */}
       <Sidebar>
         <div className='w-full h-full'>
           {column1.map((item) => (
@@ -95,23 +124,26 @@ const ExampleComponent = ({
           ))}
         </div>
       </Sidebar>
-      {/*(wrapper) content Element */}
+      {/* (wrapper) content Element */}
       <Content>
         <div
-          className='w-full h-full '
+          className='w-full h-full'
           onDragOver={handleDragOver}
           onDrop={handleDrop}
+          onDragEnd={handleDragEnd}
         >
           {column2.map((item, index) => (
-            <>
-              <div
-                onClick={() => setActiveItemId(item.id)}
-                className={`border my-1 rounded p-1 ${activeItemId === item.id ? 'border-blue-400' : ''
-                  }`}
-              >
-                <ElementCreator key={item.id} item={item} />
-              </div>
-            </>
+            <div
+              key={item.id}
+              onClick={() => setActiveItemId(item.id)}
+              draggable
+              onDragStart={(event) => handleDragStartColumn2(event, item)}
+              className={`border my-1 rounded p-1 ${
+                activeItemId === item.id ? 'border-blue-400' : ''
+              }`}
+            >
+              <ElementCreator key={item.id} item={item} />
+            </div>
           ))}
         </div>
       </Content>
