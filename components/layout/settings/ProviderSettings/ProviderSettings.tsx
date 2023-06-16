@@ -126,6 +126,7 @@ function ProviderSettings({
       </div>
       <div className='w-full text-center px-3 flex flex-col'>
         <button
+          onClick={() => console.log(JSON.stringify(elementProps))}
           className='btn w-full
                 text-white 
                 text-base  
