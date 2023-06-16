@@ -112,7 +112,7 @@ const ExampleComponent = ({
     <>
       {/* (wrapper) sidebar Element */}
       <Sidebar>
-        <div className='w-full h-full'>
+        <div className='w-full h-64'>
           {column1.map((item) => (
             <div
               key={item.id}

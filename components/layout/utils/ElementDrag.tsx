@@ -1,5 +1,4 @@
 import React from 'react'
-import { IconType } from 'react-icons'
 import Icon from './Icon'
 import { DefaultElementDragableProps } from '../../../model/typeElementdrag'
 function ElementDrag({ icon, titleElement }: DefaultElementDragableProps) {

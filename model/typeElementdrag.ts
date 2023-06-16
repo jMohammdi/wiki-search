@@ -6,7 +6,7 @@ export interface DefaultElementDragableProps {
   type?: string
   elementType: string
   titleElement: string
-  configs: {
+  configs?: {
     value?: string
     label: string
     description: string
