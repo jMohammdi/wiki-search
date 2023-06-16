@@ -16,12 +16,8 @@ function ProviderSettings({
   let findActiveElement = allPropsArray.filter(
     (el: any) => el?.id === activeElId
   )
-  if (findActiveElement === undefined) {
-    alert('ok')
-    findActiveElement = allPropsArray
-  }
-  /* @ts-ignore */
   const typeEvents =
+    /* @ts-ignore */
     React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>
   /* @ts-ignore */
   const changeElPropHnadler = (event: typeEvents): void => {
@@ -45,7 +41,7 @@ function ProviderSettings({
     // findActiveElement[0].configs[0]['value'] = "javaddedddddddd"
   }
   const { description, label, width, disabled, isRequired, value } =
-    findActiveElement[0]?.configs[0]
+    findActiveElement[0]?.configs[0] ?? allPropsArray[0].configs[0]
   const removeElementHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): void => {
