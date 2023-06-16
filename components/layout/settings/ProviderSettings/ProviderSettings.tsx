@@ -13,9 +13,13 @@ function ProviderSettings({
 }: SettinElement) {
   const allProps = JSON.stringify(elementProps)
   const allPropsArray = JSON.parse(allProps)
-  const findActiveElement = allPropsArray.filter(
+  let findActiveElement = allPropsArray.filter(
     (el: any) => el?.id === activeElId
   )
+  if (findActiveElement === undefined) {
+    alert('ok')
+    findActiveElement = allPropsArray
+  }
   /* @ts-ignore */
   const typeEvents =
     React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>
@@ -34,16 +38,22 @@ function ProviderSettings({
     const findIndex = elementProps.findIndex(
       (element) => element.id === activeElId
     )
+
     findActiveElement[0].configs[0] = item
     elementProps[findIndex] = findActiveElement[0]
     setColumn2([...elementProps])
     // findActiveElement[0].configs[0]['value'] = "javaddedddddddd"
   }
   const { description, label, width, disabled, isRequired, value } =
-    findActiveElement[0].configs[0]
-  //   useEffect(() => {
-  //     alert(123)
-  //   }, [activeElId])
+    findActiveElement[0]?.configs[0]
+  const removeElementHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): void => {
+    const removeSelectElement = allPropsArray.filter(
+      (el: any) => el?.id !== activeElId
+    )
+    setColumn2([...removeSelectElement])
+  }
   return (
     <div className='w-full h-full flex flex-col'>
       <div className='mt-2 p-1'>
@@ -118,7 +128,7 @@ function ProviderSettings({
           />
         </label>
       </div>
-      <div className='w-full text-center px-3'>
+      <div className='w-full text-center px-3 flex flex-col'>
         <button
           className='btn w-full
                 text-white 
@@ -126,11 +136,26 @@ function ProviderSettings({
                 border-transparent
                 border
                 rounded
-                py-1
+                py-2
+                 bg-green-500
+                 hover:border-yellow-500'
+        >
+          Export
+        </button>
+        <button
+          onClick={removeElementHandler}
+          className='btn w-full
+          mt-3
+                text-white 
+                text-base  
+                border-transparent
+                border
+                rounded
+                py-2
                  bg-rose-500
                  hover:border-yellow-500'
         >
-          export
+          Delete
         </button>
       </div>
     </div>
