@@ -1,7 +1,10 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import { DefaultElementDragableProps as ItemProps, GridSystemProps } from '../../../model/typeElementdrag'
+import {
+  DefaultElementDragableProps as ItemProps,
+  GridSystemProps
+} from '../../../model/typeElementdrag'
 import { Elements } from '../../../model/SampleData'
 import Sidebar from '../sidebar/Sidebar'
 import ElementDrag from '../utils/ElementDrag'
@@ -130,7 +133,6 @@ const ExampleComponent = ({
               onDragStart={(event) => handleDragStart(event, item.id)}
               key={item.id}
               draggable
-
             >
               <GridItem {...item} />
             </div>
@@ -151,13 +153,14 @@ const ExampleComponent = ({
               onClick={() => setActiveItemId(item.id)}
               draggable
               onDragStart={(event) => handleDragStartColumn2(event, item)}
-              className={`border my-1 rounded p-1 ${activeItemId === item.id ? 'border-blue-400' : ''
-                }`}
+              className={`border my-1 rounded p-1 ${
+                activeItemId === item.id ? 'border-blue-400' : ''
+              }`}
             >
               <ElementCreator key={item.id} item={item} />
             </div>
           ))}
-          {gridTemplate.map((item) => <p className='border border-blue-500 rounded p-1 h-auto' key={item.id}> {item.title}</p>)}
+          {/* {gridTemplate.map((item) => <p className='border border-blue-500 rounded p-1 h-auto' key={item.id}> {item.title}</p>)} */}
         </div>
       </Content>
     </>
