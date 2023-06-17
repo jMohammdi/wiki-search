@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { DefaultElementDragableProps as elProps } from '@/model/typeElementdrag'
 import InputContent from '../components/InputContent'
+import Button from '../../utils/Button'
 type SettinElement = {
   elementProps: elProps[]
   activeElId: string | null
@@ -49,6 +50,9 @@ function ProviderSettings({
       (el: any) => el?.id !== activeElId
     )
     setColumn2([...removeSelectElement])
+  }
+  const exportHandler = () => {
+    console.log(JSON.stringify(elementProps))
   }
   return (
     <div className='w-full h-full flex flex-col'>
@@ -125,35 +129,13 @@ function ProviderSettings({
         </label>
       </div>
       <div className='w-full text-center px-3 flex flex-col'>
-        <button
-          onClick={() => console.log(JSON.stringify(elementProps))}
-          className='btn w-full
-                text-white 
-                text-base  
-                border-transparent
-                border
-                rounded
-                py-2
-                 bg-green-500
-                 hover:border-yellow-500'
-        >
-          Export
-        </button>
-        <button
-          onClick={removeElementHandler}
-          className='btn w-full
-          mt-3
-                text-white 
-                text-base  
-                border-transparent
-                border
-                rounded
-                py-2
-                 bg-rose-500
-                 hover:border-yellow-500'
-        >
-          Delete
-        </button>
+
+
+        <Button label='EXPORT' actionHandler={exportHandler}
+          color='lime' />
+
+        <Button label='DELETE' actionHandler={removeElementHandler}
+          color='red' />
       </div>
     </div>
   )

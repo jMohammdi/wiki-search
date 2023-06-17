@@ -28,10 +28,10 @@ const ExampleComponent = ({
 
   const handleDragStart = (
     event: React.DragEvent<HTMLDivElement>,
-    item: ItemProps
+    item: string
   ) => {
     // Store the dragged item's ID
-    event.dataTransfer.setData('text/plain', item.id.toString())
+    event.dataTransfer.setData('text/plain', item.toString())
   }
   const handleDragStartColumn2 = (
     event: React.DragEvent<HTMLDivElement>,
@@ -120,14 +120,14 @@ const ExampleComponent = ({
             <div
               key={item.id}
               draggable
-              onDragStart={(event) => handleDragStart(event, item)}
+              onDragStart={(event) => handleDragStart(event, item.id)}
             >
               <ElementDrag key={item.id} {...item} />
             </div>
           ))}
           {gridTemplate.map((item) => (
             <div
-              onDragStart={(event) => handleDragStart(event, item)}
+              onDragStart={(event) => handleDragStart(event, item.id)}
               key={item.id}
               draggable
 

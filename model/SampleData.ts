@@ -10,7 +10,9 @@ export const Elements: AllElementProp[] = [
     icon: BiText,
     type: 'text',
     elementType: 'text',
-    configs: [{ description: 'ddd', label: 'Name', width: '3', value: '' }]
+    configs: [
+      { description: 'descriptions', label: 'Name', width: '3', value: '' }
+    ]
   }
 ]
 // Grid system template
