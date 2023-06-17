@@ -1,19 +1,9 @@
 import { v4 as uuidv4 } from 'uuid'
-import { AiOutlineCheckSquare } from 'react-icons/ai'
-import { BiText, BiHash, BiRadioCircleMarked } from 'react-icons/bi'
-import { BsKeyFill } from 'react-icons/bs'
-import { DefaultElementDragableProps } from './typeElementdrag'
+import { BiText } from 'react-icons/bi'
+import { BsFillGrid1X2Fill } from 'react-icons/bs'
+import { DefaultElementDragableProps, GridSystemProps } from './typeElementdrag'
 type AllElementProp = DefaultElementDragableProps
 export const Elements: AllElementProp[] = [
-  // {
-  //   id: uuidv4(),
-  //   titleElement: 'Checkbox',
-  //   icon: AiOutlineCheckSquare,
-  //   type: 'checkbox',
-  //   elementType: 'checkbox',
-  //   configs: [{ description: 'ddd', label: 'ddd', width: 'dddd' }]
-  // }
-
   {
     id: uuidv4(),
     titleElement: 'Text Field',
@@ -22,26 +12,14 @@ export const Elements: AllElementProp[] = [
     elementType: 'text',
     configs: [{ description: 'ddd', label: 'Name', width: '3', value: '' }]
   }
-  // {
-  //   id: uuidv4(),
-  //   titleElement: 'Number',
-  //   icon: BiHash,
-  //   type: 'number',
-  //   elementType: 'number'
-  // },
-  // {
-  //   id: uuidv4(),
-  //   titleElement: 'Password',
-  //   icon: BsKeyFill,
-  //   type: 'password',
-  //   elementType: 'password'
-  // },
-  // {
-  //   id: uuidv4(),
-  //   titleElement: 'Radio',
-  //   icon: BiRadioCircleMarked,
-  //   type: 'radio',
-  //   elementType: 'radio'
-  // }
 ]
-// elements basic data for show configs
+// Grid system template
+export const Grids: GridSystemProps[] = [
+  {
+    columns: '3',
+    icons: BsFillGrid1X2Fill,
+    id: uuidv4(),
+    title: 'Layout',
+    childrens: []
+  }
+]
