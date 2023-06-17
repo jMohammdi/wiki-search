@@ -1,5 +1,9 @@
 'use client'
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import type { TypedUseSelectorHook } from 'react-redux'
+import { RootState, AppDispatch } from '@/store'
+import { SetcolumnHnadler } from '@/store/DragDrop'
 import { v4 as uuidv4 } from 'uuid'
 import {
   DefaultElementDragableProps as ItemProps,
@@ -20,6 +24,8 @@ interface MyComponentProps {
   gridTemplate: GridSystemProps[]
 }
 
+export const useAppDispatch: () => AppDispatch = useDispatch
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
 const ExampleComponent = ({
   setColumn2,
   column2,
@@ -27,8 +33,9 @@ const ExampleComponent = ({
   activeItemId,
   gridTemplate
 }: MyComponentProps) => {
-  const [column1, setColumn1] = useState<ItemProps[]>(Elements)
-
+  const dispatch = useAppDispatch()
+  const column1 = useAppSelector((state) => state.builder.column1)
+  //✅
   const handleDragStart = (
     event: React.DragEvent<HTMLDivElement>,
     item: string
@@ -36,14 +43,16 @@ const ExampleComponent = ({
     // Store the dragged item's ID
     event.dataTransfer.setData('text/plain', item.toString())
   }
+  //✅
   const handleDragStartColumn2 = (
     event: React.DragEvent<HTMLDivElement>,
-    item: ItemProps | GridSystemProps
+    item: ItemProps
   ) => {
     // Store the dragged item's ID
     event.dataTransfer.setData('text/plain', item.id.toString())
-    setActiveItemId(item.id.toString())
+    dispatch(SetcolumnHnadler(item.id))
   }
+  //✅
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault()
     const itemId = event.dataTransfer.getData('text/plain')

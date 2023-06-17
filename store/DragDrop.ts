@@ -20,6 +20,7 @@ export interface DefaultElementDragableProps {
       disabled?: boolean
     }[]
   }[]
+  column2: DefaultProps[]
 }
 ;[]
 const initialState: DefaultElementDragableProps = {
@@ -35,12 +36,17 @@ const initialState: DefaultElementDragableProps = {
         { description: 'descriptions', label: 'Name', width: '3', value: '' }
       ]
     }
-  ]
+  ],
+  column2: []
 }
 const CreateFormSlice = createSlice({
   name: 'builder',
   initialState,
-  reducers: {}
+  reducers: {
+    SetcolumnHnadler: (state, action) => {
+      state.selectedElement = action.payload
+    }
+  }
 })
-
+export const { SetcolumnHnadler } = CreateFormSlice.actions
 export default CreateFormSlice.reducer
