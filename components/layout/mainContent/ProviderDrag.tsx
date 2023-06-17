@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import type { TypedUseSelectorHook } from 'react-redux'
 import { RootState, AppDispatch } from '@/store'
-import { SetcolumnHnadler } from '@/store/DragDrop'
+import { SetcolumnHnadler, setColumnonDropHandler } from '@/store/DragDrop'
 import { v4 as uuidv4 } from 'uuid'
 import {
   DefaultElementDragableProps as ItemProps,
@@ -28,13 +28,15 @@ export const useAppDispatch: () => AppDispatch = useDispatch
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
 const ExampleComponent = ({
   setColumn2,
-  column2,
+
   setActiveItemId,
-  activeItemId,
+
   gridTemplate
 }: MyComponentProps) => {
   const dispatch = useAppDispatch()
   const column1 = useAppSelector((state) => state.builder.column1)
+  const column2 = useAppSelector((state) => state.builder.column2)
+  const activeItemId = useAppSelector((state) => state.builder.selectedElement)
   //✅
   const handleDragStart = (
     event: React.DragEvent<HTMLDivElement>,
@@ -56,41 +58,7 @@ const ExampleComponent = ({
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault()
     const itemId = event.dataTransfer.getData('text/plain')
-    const item = column1.find((item) => item.id.toString() === itemId)
-    const isUniqueElement = column2.find(
-      (item) => item.id.toString() === itemId
-    )
-
-    if (item && !isUniqueElement) {
-      const rect = event.currentTarget.getBoundingClientRect()
-      const offsetX = event.clientX - rect.left
-      const offsetY = event.clientY - rect.top
-
-      // Check if the drop occurred inside the target container
-      if (
-        offsetX >= 0 &&
-        offsetX <= rect.width &&
-        offsetY >= 0 &&
-        offsetY <= rect.height
-      ) {
-        // Remove the item from Column 1 🧰
-        // setColumn1((prevColumn1) => prevColumn1.filter((i) => i.id !== item.id));
-
-        // Add the item to Column 2
-        const { icon, type, elementType, configs, titleElement } = item
-        const changeId = {
-          icon,
-          type,
-          elementType,
-          id: uuidv4(),
-          titleElement,
-          configs
-        }
-
-        setColumn2([...column2, changeId])
-        setActiveItemId(changeId.id)
-      }
-    }
+    dispatch(setColumnonDropHandler({ event, itemSelected: itemId }))
   }
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
