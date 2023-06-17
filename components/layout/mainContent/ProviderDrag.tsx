@@ -1,25 +1,28 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import { DefaultElementDragableProps as ItemProps } from '../../../model/typeElementdrag'
+import { DefaultElementDragableProps as ItemProps, GridSystemProps } from '../../../model/typeElementdrag'
 import { Elements } from '../../../model/SampleData'
 import Sidebar from '../sidebar/Sidebar'
 import ElementDrag from '../utils/ElementDrag'
 import Content from './Content'
 import ElementCreator from '@/components/ElementCreator/components/ElementCreator'
+import GridItem from '@/components/Gridsystem/GridItem'
 
 interface MyComponentProps {
   setColumn2: React.Dispatch<React.SetStateAction<ItemProps[]>>
   column2: ItemProps[]
   activeItemId: string | null
   setActiveItemId: React.Dispatch<React.SetStateAction<string | null>>
+  gridTemplate: GridSystemProps[]
 }
 
 const ExampleComponent = ({
   setColumn2,
   column2,
   setActiveItemId,
-  activeItemId
+  activeItemId,
+  gridTemplate
 }: MyComponentProps) => {
   const [column1, setColumn1] = useState<ItemProps[]>(Elements)
 
@@ -32,7 +35,7 @@ const ExampleComponent = ({
   }
   const handleDragStartColumn2 = (
     event: React.DragEvent<HTMLDivElement>,
-    item: ItemProps
+    item: ItemProps | GridSystemProps
   ) => {
     // Store the dragged item's ID
     event.dataTransfer.setData('text/plain', item.id.toString())
@@ -122,6 +125,16 @@ const ExampleComponent = ({
               <ElementDrag key={item.id} {...item} />
             </div>
           ))}
+          {gridTemplate.map((item) => (
+            <div
+              onDragStart={(event) => handleDragStart(event, item)}
+              key={item.id}
+              draggable
+
+            >
+              <GridItem {...item} />
+            </div>
+          ))}
         </div>
       </Sidebar>
       {/* (wrapper) content Element */}
@@ -138,13 +151,13 @@ const ExampleComponent = ({
               onClick={() => setActiveItemId(item.id)}
               draggable
               onDragStart={(event) => handleDragStartColumn2(event, item)}
-              className={`border my-1 rounded p-1 ${
-                activeItemId === item.id ? 'border-blue-400' : ''
-              }`}
+              className={`border my-1 rounded p-1 ${activeItemId === item.id ? 'border-blue-400' : ''
+                }`}
             >
               <ElementCreator key={item.id} item={item} />
             </div>
           ))}
+          {gridTemplate.map((item) => <p className='border border-blue-500 rounded p-1 h-auto' key={item.id}> {item.title}</p>)}
         </div>
       </Content>
     </>

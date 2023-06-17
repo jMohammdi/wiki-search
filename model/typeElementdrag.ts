@@ -20,7 +20,7 @@ export interface DefaultElementDragableProps {
 export interface GridSystemProps {
   id: string
   title: string
-  icons: IconType
+  icon: IconType
   columns: string
   childrens?: DefaultElementDragableProps[]
 }

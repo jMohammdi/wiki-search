@@ -16,9 +16,9 @@ export const Elements: AllElementProp[] = [
 // Grid system template
 export const Grids: GridSystemProps[] = [
   {
-    columns: '3',
-    icons: BsFillGrid1X2Fill,
     id: uuidv4(),
+    columns: '3',
+    icon: BsFillGrid1X2Fill,
     title: 'Layout',
     childrens: []
   }
