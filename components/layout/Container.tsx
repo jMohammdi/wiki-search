@@ -11,11 +11,7 @@ function Container() {
   return (
     <div className='h-screen w-full border flex'>
       <ProviderDrags
-        setColumn2={setColumn2}
-        column2={column2}
-        activeItemId={activeItemId}
-        setActiveItemId={setActiveItemId}
-        gridTemplate={gridTemplate}
+
 
       />
       <Setting column2={column2} setColumn2={setColumn2} activeElement={activeItemId} />

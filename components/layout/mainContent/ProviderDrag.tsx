@@ -3,36 +3,21 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import type { TypedUseSelectorHook } from 'react-redux'
 import { RootState, AppDispatch } from '@/store'
-import { SetcolumnHnadler, setColumnonDropHandler } from '@/store/DragDrop'
-import { v4 as uuidv4 } from 'uuid'
+import { SetcolumnHnadler, setColumnonDropHandler, setactiveElement } from '@/store/DragDrop'
 import {
   DefaultElementDragableProps as ItemProps,
-  GridSystemProps
 } from '../../../model/typeElementdrag'
-import { Elements } from '../../../model/SampleData'
 import Sidebar from '../sidebar/Sidebar'
 import ElementDrag from '../utils/ElementDrag'
 import Content from './Content'
 import ElementCreator from '@/components/ElementCreator/components/ElementCreator'
-import GridItem from '@/components/Gridsystem/GridItem'
 
-interface MyComponentProps {
-  setColumn2: React.Dispatch<React.SetStateAction<ItemProps[]>>
-  column2: ItemProps[]
-  activeItemId: string | null
-  setActiveItemId: React.Dispatch<React.SetStateAction<string | null>>
-  gridTemplate: GridSystemProps[]
-}
+
+
 
 export const useAppDispatch: () => AppDispatch = useDispatch
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
-const ExampleComponent = ({
-  setColumn2,
-
-  setActiveItemId,
-
-  gridTemplate
-}: MyComponentProps) => {
+const ExampleComponent = () => {
   const dispatch = useAppDispatch()
   const column1 = useAppSelector((state) => state.builder.column1)
   const column2 = useAppSelector((state) => state.builder.column2)
@@ -60,7 +45,6 @@ const ExampleComponent = ({
     const itemId = event.dataTransfer.getData('text/plain')
     dispatch(setColumnonDropHandler({ event, itemSelected: itemId }))
   }
-
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault()
     event.dataTransfer.dropEffect = 'move'
@@ -68,27 +52,8 @@ const ExampleComponent = ({
 
   const handleDragEnd = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault()
-    const newOrder = [...column2] // Create a copy of column2
-    const itemId = event.dataTransfer.getData('text/plain')
-    const draggedItemIndex = newOrder.findIndex(
-      (item) => item.id.toString() === activeItemId
-    )
-    const dropzoneIndex = Array.from(
-      event.currentTarget.parentNode.children
-    ).indexOf(event.currentTarget)
+    dispatch(setColumnonDropHandler({ event }))
 
-    console.log('draggedItemIndex:', draggedItemIndex)
-    console.log('dropzoneIndex:', dropzoneIndex)
-
-    if (
-      draggedItemIndex !== -1 &&
-      dropzoneIndex !== -1 &&
-      draggedItemIndex !== dropzoneIndex
-    ) {
-      const [draggedItem] = newOrder.splice(draggedItemIndex, 1)
-      newOrder.splice(dropzoneIndex, 0, draggedItem)
-      setColumn2(newOrder)
-    }
   }
 
   return (
@@ -105,7 +70,7 @@ const ExampleComponent = ({
               <ElementDrag key={item.id} {...item} />
             </div>
           ))}
-          {gridTemplate.map((item) => (
+          {/* {gridTemplate.map((item) => (
             <div
               onDragStart={(event) => handleDragStart(event, item.id)}
               key={item.id}
@@ -113,7 +78,7 @@ const ExampleComponent = ({
             >
               <GridItem {...item} />
             </div>
-          ))}
+          ))} */}
         </div>
       </Sidebar>
       {/* (wrapper) content Element */}
@@ -127,12 +92,11 @@ const ExampleComponent = ({
           {column2.map((item, index) => (
             <div
               key={item.id}
-              onClick={() => setActiveItemId(item.id)}
+              onClick={() => dispatch(setactiveElement(item.id))}
               draggable
               onDragStart={(event) => handleDragStartColumn2(event, item)}
-              className={`border my-1 rounded p-1 ${
-                activeItemId === item.id ? 'border-blue-400' : ''
-              }`}
+              className={`border my-1 rounded p-1 ${activeItemId === item.id ? 'border-blue-400' : ''
+                }`}
             >
               <ElementCreator key={item.id} item={item} />
             </div>

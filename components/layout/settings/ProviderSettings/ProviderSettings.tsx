@@ -1,21 +1,31 @@
 import React, { useEffect } from 'react'
 import { DefaultElementDragableProps as elProps } from '@/model/typeElementdrag'
+import { useDispatch, useSelector } from 'react-redux'
 import InputContent from '../components/InputContent'
 import Button from '../../utils/Button'
+import { RootState, AppDispatch } from '@/store'
+import type { TypedUseSelectorHook } from 'react-redux'
+import { changeElementValues } from '@/store/DragDrop'
+
 type SettinElement = {
   elementProps: elProps[]
   activeElId: string | null
   setColumn2: React.Dispatch<React.SetStateAction<elProps[]>>
 }
-function ProviderSettings({
-  elementProps,
-  activeElId,
-  setColumn2
-}: SettinElement) {
-  const allProps = JSON.stringify(elementProps)
+
+
+export const useAppDispatch: () => AppDispatch = useDispatch
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+function ProviderSettings() {
+  const column1 = useAppSelector((state) => state.builder.column1)
+  const column2 = useAppSelector((state) => state.builder.column2)
+  const activeItemId = useAppSelector((state) => state.builder.selectedElement)
+
+  const dispatch = useAppDispatch()
+  const allProps = JSON.stringify(column2)
   const allPropsArray = JSON.parse(allProps)
   let findActiveElement = allPropsArray.filter(
-    (el: any) => el?.id === activeElId
+    (el: any) => el?.id === activeItemId
   )
   const typeEvents =
     /* @ts-ignore */
@@ -23,24 +33,9 @@ function ProviderSettings({
   /* @ts-ignore */
   const changeElPropHnadler = (event: typeEvents): void => {
     const { value, name, type, checked } = event.target
-    const item = findActiveElement[0].configs[0]
-
-    if (name === 'disabled' || name === 'isRequired') {
-      /* @ts-ignore */
-      findActiveElement[0].configs[0][name] = checked
-    } else {
-      /* @ts-ignore */
-      findActiveElement[0].configs[0][name] = value
-    }
-    const findIndex = elementProps.findIndex(
-      (element) => element.id === activeElId
-    )
-
-    findActiveElement[0].configs[0] = item
-    elementProps[findIndex] = findActiveElement[0]
-    setColumn2([...elementProps])
-    // findActiveElement[0].configs[0]['value'] = "javaddedddddddd"
+    dispatch(changeElementValues({ value, name, type, checked }))
   }
+
   const { description, label, width, disabled, isRequired, value } =
     findActiveElement[0]?.configs[0] ?? allPropsArray[0].configs[0]
   const removeElementHandler = (
