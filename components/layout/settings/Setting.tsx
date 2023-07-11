@@ -10,7 +10,7 @@ interface ColumnProps {
   setColumn2: React.Dispatch<React.SetStateAction<ItemProps[]>>
 }
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
-function Setting({ activeElement, setColumn2 }: ColumnProps) {
+function Setting() {
   const column2 = useAppSelector((state) => state.builder.column2)
   return <div className=' w-96 border'>
     <div className='w-full p-2 text-center text-white text-base bg-cyan-400'>

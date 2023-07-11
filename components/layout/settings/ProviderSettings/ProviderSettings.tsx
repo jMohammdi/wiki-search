@@ -47,7 +47,7 @@ function ProviderSettings() {
     setColumn2([...removeSelectElement])
   }
   const exportHandler = () => {
-    console.log(JSON.stringify(elementProps))
+    console.log(JSON.stringify(column2))
   }
   return (
     <div className='w-full h-full flex flex-col'>
